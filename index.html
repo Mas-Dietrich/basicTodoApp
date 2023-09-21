@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Todo App</title>
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <header>To-do List</header>
+
+        <ul class="todoList"></ul>
+
+        <div class="inputField">
+            <input type="text" placeholder = "Add To-do" id="todo"/>
+            <button id="addTodo"><i class="fas fa-plus"></i></button>
+        </div>
+
+
+
+        <div class="footer">
+            <h2 id="pendingTasks"></h2>
+            <button id="clearDoneTodo">Clear Done</button>
+        </div>
+</div>
+
+    <script src="main.js"></script>
+</body>
+</html>

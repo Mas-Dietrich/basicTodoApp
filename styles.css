@@ -1,0 +1,56 @@
+li {
+    padding: 10px;
+}
+
+i {
+    margin-left: 5px;
+}
+
+body {
+    text-align: center;
+    align-items: center;
+    background-image: linear-gradient(to left, #ABDCFF, #0396FF)
+
+}
+
+.wrapper {
+    margin: 4rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 20px;
+
+    box-shadow: 0px 7px 5px #d3d3d3;
+}
+
+header {
+    font-size: 2rem;
+    text-decoration: underline;
+}
+
+li {
+    list-style-type: none;
+    font-size: 1.5rem;
+}
+
+ul li button {
+    margin-left: 5px;
+    background-color: lightgreen;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 15px;
+}
+
+.footer {
+    background-color: whitesmoke;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 25px;
+}
+
+.footer button {
+    border: none;
+    background-color: #cc0000;
+    padding: 10px 15px;
+    border-radius: 25px;
+    color: white;
+}
