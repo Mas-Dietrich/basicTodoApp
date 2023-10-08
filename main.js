@@ -157,7 +157,7 @@ function addCategory() {
 function addNewTodo() {
     const todoName = prompt('Enter Todo Name:');
     if (todoName !== null && todoName.trim() !== '') {
-        const todoCategory = prompt('Enter Task Category');
+        const todoCategory = prompt('Enter Todo Category');
         if (todoCategory !== null) {
             const newTodo = {
                 title: todoName,
@@ -175,46 +175,7 @@ newTodoButton.addEventListener('click', addNewTodo)
 
 //Users need to be able to delete categories
 
-// Function to edit and delete categories
-function generateCategoryList() {
-    const categories = Array.from(new Set(todos.map(todo => todo.category)));
 
-    const categoryEditingContainer = document.getElementById('categoryEditingContainer');
-    categoryEditingContainer.innerHTML = '';
-
-    if (categories.length === 0) {
-        categoryEditingContainer.textContent = 'No categories to edit or delete.';
-        return;
-    }
-
-    const ul = document.createElement('ul')
-
-    categories.forEach(category => {
-        const li = document.createElement('li')
-
-        const editCategory = document.createElement('input')
-        editCategory.type = 'text';
-        editCategory.value = category;
-
-
-        const editCategoryButton = document.createElement('button')
-        editCategoryButton.textContent = 'Edit'
-        editCategoryButton.addEventListener('click', () => editCategory(category, editCategory.value))
-
-
-        const deleteCategoryButton = document.createElement('button')
-        deleteCategoryButton.textContent = 'Delete'
-        deleteCategoryButton.addEventListener('click', () =>  deleteCategory(category))
-
-
-        li.appendChild(editCategory)
-        li.appendChild(editCategoryButton)
-        li.appendChild(deleteCategoryButton)
-        ul.appendChild(li)
-    })
-
-    categoryEditingContainer.appendChild(ul)
-}
 
 function editCategory(oldCategory, newCategory) {
     todos.forEach(todo => {
@@ -222,23 +183,21 @@ function editCategory(oldCategory, newCategory) {
             todo.category = newCategory
         }
     })
-
-    generateCategoryList();
-    categoryOptions();
     myTodoList();
 }
 
 
 function deleteCategory(categoryToDelete) {
-    todos = todos.filter(todo => todo.category !== categoryToDelete)
-
-    generateCategoryList();
-    categoryOptions();
+    todos.forEach(todo => {
+        if (todo.category === categoryToDelete) {
+            todo.category = "No Category";
+        }
+    })
     myTodoList();
 }
 
 const editCategoryButton = document.getElementById('editCategory');
-editCategoryButton.addEventListener('click', generateCategoryList);
+
 
 document.getElementById('clearDoneTodo').addEventListener('click', clearCompletedTodos)
 
