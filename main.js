@@ -18,6 +18,7 @@ let todos = [
 
 let todoList = document.querySelector('ul')
 let pendingTasks = document.getElementById('pendingTasks')
+//Displaying Todos Start
 
 //Display todo list
 function myTodoList(categoryFilter) {
@@ -69,7 +70,9 @@ function addNewTodo() {
                 completedStatus: false,
                 category: todoCategory
             }
-            todos.push(newTodo)
+            todos.push(newTodo);
+            displayCategoryList();
+            categoryOptions();
             myTodoList();
         }
     }
@@ -86,11 +89,14 @@ function editTodo(index) {
 //Clear out completed todos
 function clearCompletedTodos() {
     todos = todos.filter(todo => !todo.completedStatus);
-    myTodoList()
+    displayCategoryList();
+    categoryOptions();
+    myTodoList();
 }
 
-//TODO: display categories in todolist style
+//Display todos End
 
+//Category Filtering Start
 //Users need to be able to view todos by category
 function categoryOptions() {
     const categorySelect = document.getElementById('categoryFilter')
@@ -128,37 +134,112 @@ categorySelect.addEventListener('change', () => {
     const selectedCategory = categorySelect.value;
     myTodoList(selectedCategory)
 })
+//Category Filtering End
+
+//Display, Edit and Delete All Categories Start
+function displayCategoryList() {
+    const categoryEditingList = document.getElementById('categoryEditingList');
+
+    // Clear existing content
+    categoryEditingList.innerHTML = '';
+
+    // Create a list element for each category
+    todos.forEach(todo => {
+        if (Array.isArray(todo.category)) {
+            todo.category.forEach(category => {
+                const listItem = document.createElement('div');
+                listItem.className = 'category-list-item';
+
+                const categoryName = document.createElement('span');
+                categoryName.textContent = category;
+
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.addEventListener('click', () => editCategory(category, prompt('Enter new category name:', category)));
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', () => deleteCategory(category));
+
+                listItem.appendChild(categoryName);
+                listItem.appendChild(editButton);
+                listItem.appendChild(deleteButton);
+
+                categoryEditingList.appendChild(listItem);
+            });
+        } else {
+            const listItem = document.createElement('div');
+            listItem.className = 'category-list-item';
+
+            const categoryName = document.createElement('span');
+            categoryName.textContent = todo.category;
+
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.addEventListener('click', () => editCategory(todo.category, prompt('Enter new category name:', todo.category)));
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => deleteCategory(todo.category));
+
+            listItem.appendChild(categoryName);
+            listItem.appendChild(editButton);
+            listItem.appendChild(deleteButton);
+
+            categoryEditingList.appendChild(listItem);
+        }
+    });
+}
+
+// Function to edit a category
+function editCategory(oldCategory, newCategory) {
+    todos.forEach(todo => {
+        if (Array.isArray(todo.category)) {
+            const index = todo.category.indexOf(oldCategory);
+            if (index !== -1) {
+                todo.category[index] = newCategory;
+            }
+        } else {
+            if (todo.category === oldCategory) {
+                todo.category = newCategory;
+            }
+        }
+    });
+    displayCategoryList(); // Update the category list after editing
+    myTodoList(); // Refresh the todo list
+    categoryOptions();
+
+}
+
+// Function to delete a category
+function deleteCategory(categoryToDelete) {
+    todos.forEach(todo => {
+        if (Array.isArray(todo.category)) {
+            const index = todo.category.indexOf(categoryToDelete);
+            if (index !== -1) {
+                todo.category.splice(index, 1);
+            }
+        } else {
+            if (todo.category === categoryToDelete) {
+                todo.category = "No Category";
+            }
+        }
+    });
+    displayCategoryList(); // Update the category list after deleting
+    myTodoList(); // Refresh the todo list
+    categoryOptions();
+
+}
+
+
+// Call the function to initially display the categories
+displayCategoryList();
+
+//Display, Edit and Delete All Categories End
 
 
 const newTodoButton = document.getElementById('addNewTodo')
 newTodoButton.addEventListener('click', addNewTodo)
-
-//TODO: when edit categories is clicked,
-// display categories in list like todolist
-// with edit and delete buttons
-
-function editCategory(oldCategory, newCategory) {
-    todos.forEach(todo => {
-        if(todo.category === oldCategory) {
-            todo.category = newCategory
-        }
-    })
-    myTodoList();
-}
-
-
-function deleteCategory(categoryToDelete) {
-    todos.forEach(todo => {
-        if (todo.category === categoryToDelete) {
-            todo.category = "No Category";
-        }
-    })
-    myTodoList();
-}
-
-const editCategoryButton = document.getElementById('editCategory');
-
-
 document.getElementById('clearDoneTodo').addEventListener('click', clearCompletedTodos)
 
 myTodoList()
