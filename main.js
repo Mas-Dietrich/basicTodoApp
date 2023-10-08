@@ -2,7 +2,7 @@ let todos = [
     {
         title: "Do Homework",
         completedStatus: false,
-        category: ["DGM3760", "School"]
+        category: "DGM3760"
     },
     {
         title: "Walk the dog",
@@ -26,7 +26,7 @@ function myTodoList(categoryFilter) {
         // Check if the category matches the selected filter or if no filter is applied
         if (!categoryFilter || (Array.isArray(todo.category) && todo.category.includes(categoryFilter)) || todo.category === categoryFilter) {
             let li = document.createElement('li');
-            li.innerHTML = `${todo.title} <i class="fa fa-pencil"></i>`;
+            li.innerHTML = `<span style="font-size:15px; font-style: italic;">${todo.category}</span> : ${todo.title} <i class="fa fa-check"></i>`;
             if (todo.completedStatus) {
                 li.classList.add('completed');
                 li.style.textDecoration = 'line-through';
@@ -57,6 +57,8 @@ function toggleComplete(index) {
     todos[index].completedStatus = !todos[index].completedStatus;
     myTodoList();
 }
+
+/*
 function pushTodo() {
     const todoTitle = document.getElementById('todo').value;
     //const selectedCategory = document.getElementById('categorySelect').value;
@@ -72,7 +74,7 @@ function pushTodo() {
     } else {
         alert('Please add a new task')
     }
-}
+}*/
 
 function editTodo(index) {
     const newTitle = prompt('Edit task:', todos[index].title);
@@ -128,6 +130,7 @@ categorySelect.addEventListener('change', () => {
     myTodoList(selectedCategory)
 })
 
+/*
 //Allow users to create new categories
 function addCategory() {
     const newCategoryInput = document.getElementById('newCategory')
@@ -148,16 +151,95 @@ function addCategory() {
             alert("Category Already Exists")
         }
     }
+}*/
+
+//New function that will allow user to create a new task and give it a category
+function addNewTodo() {
+    const todoName = prompt('Enter Todo Name:');
+    if (todoName !== null && todoName.trim() !== '') {
+        const todoCategory = prompt('Enter Task Category');
+        if (todoCategory !== null) {
+            const newTodo = {
+                title: todoName,
+                completedStatus: false,
+                category: todoCategory
+            }
+            todos.push(newTodo)
+            myTodoList();
+        }
+    }
 }
 
-//Allow users to select a category when adding new todos
+const newTodoButton = document.getElementById('addNewTodo')
+newTodoButton.addEventListener('click', addNewTodo)
 
 //Users need to be able to delete categories
 
-//Users need to be able to edit current categories ( and update all existing todos with the edited category )
+// Function to edit and delete categories
+function generateCategoryList() {
+    const categories = Array.from(new Set(todos.map(todo => todo.category)));
 
-document.getElementById('addTodo').addEventListener('click', pushTodo)
+    const categoryEditingContainer = document.getElementById('categoryEditingContainer');
+    categoryEditingContainer.innerHTML = '';
+
+    if (categories.length === 0) {
+        categoryEditingContainer.textContent = 'No categories to edit or delete.';
+        return;
+    }
+
+    const ul = document.createElement('ul')
+
+    categories.forEach(category => {
+        const li = document.createElement('li')
+
+        const editCategory = document.createElement('input')
+        editCategory.type = 'text';
+        editCategory.value = category;
+
+
+        const editCategoryButton = document.createElement('button')
+        editCategoryButton.textContent = 'Edit'
+        editCategoryButton.addEventListener('click', () => editCategory(category, editCategory.value))
+
+
+        const deleteCategoryButton = document.createElement('button')
+        deleteCategoryButton.textContent = 'Delete'
+        deleteCategoryButton.addEventListener('click', () =>  deleteCategory(category))
+
+
+        li.appendChild(editCategory)
+        li.appendChild(editCategoryButton)
+        li.appendChild(deleteCategoryButton)
+        ul.appendChild(li)
+    })
+
+    categoryEditingContainer.appendChild(ul)
+}
+
+function editCategory(oldCategory, newCategory) {
+    todos.forEach(todo => {
+        if(todo.category === oldCategory) {
+            todo.category = newCategory
+        }
+    })
+
+    generateCategoryList();
+    categoryOptions();
+    myTodoList();
+}
+
+
+function deleteCategory(categoryToDelete) {
+    todos = todos.filter(todo => todo.category !== categoryToDelete)
+
+    generateCategoryList();
+    categoryOptions();
+    myTodoList();
+}
+
+const editCategoryButton = document.getElementById('editCategory');
+editCategoryButton.addEventListener('click', generateCategoryList);
+
 document.getElementById('clearDoneTodo').addEventListener('click', clearCompletedTodos)
-document.getElementById('addCategory').addEventListener('click', addCategory)
 
 myTodoList()

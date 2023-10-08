@@ -19,7 +19,6 @@
         <header>To-do List</header>
 
         <div>
-            <h2>Categories</h2>
             <select id="categoryFilter">
                 <option value="">All Categories</option>
             </select>
@@ -27,14 +26,12 @@
 
         <ul class="todoList"></ul>
 
-        <div class="inputField">
-            <input type="text" placeholder = "Add To-do" id="todo"/>
-            <button id="addTodo"><i class="fas fa-plus"></i></button>
+        <div id="newTodo">
+            <button id="addNewTodo">Add New Todo</button>
         </div>
 
-        <div class="newCategoryField">
-            <input type="text" id="newCategory" placeholder="Add New Category">
-            <button id="addCategory"><i class="fas fa-plus"></i></button>
+        <div id="categoryEditingContainer">
+            <button id="editCategory">Edit Categories</button>
         </div>
 
 
