@@ -58,23 +58,22 @@ function toggleComplete(index) {
     myTodoList();
 }
 
-/*
-function pushTodo() {
-    const todoTitle = document.getElementById('todo').value;
-    //const selectedCategory = document.getElementById('categorySelect').value;
-    if (todoTitle.trim() !== '') {
-        const newTodo = {
-            title: todoTitle,
-            completedStatus: false,
-            //category: selectedCategory,
+//New function that will allow user to create a new task and give it a category
+function addNewTodo() {
+    const todoName = prompt('Enter Todo Name:');
+    if (todoName !== null && todoName.trim() !== '') {
+        const todoCategory = prompt('Enter Todo Category');
+        if (todoCategory !== null) {
+            const newTodo = {
+                title: todoName,
+                completedStatus: false,
+                category: todoCategory
+            }
+            todos.push(newTodo)
+            myTodoList();
         }
-        todos.push(newTodo)
-        document.getElementById('todo').value = '';
-        myTodoList()
-    } else {
-        alert('Please add a new task')
     }
-}*/
+}
 
 function editTodo(index) {
     const newTitle = prompt('Edit task:', todos[index].title);
@@ -90,7 +89,7 @@ function clearCompletedTodos() {
     myTodoList()
 }
 
-//TODO:
+//TODO: display categories in todolist style
 
 //Users need to be able to view todos by category
 function categoryOptions() {
@@ -130,52 +129,13 @@ categorySelect.addEventListener('change', () => {
     myTodoList(selectedCategory)
 })
 
-/*
-//Allow users to create new categories
-function addCategory() {
-    const newCategoryInput = document.getElementById('newCategory')
-    const newCategory = newCategoryInput.value.trim();
-
-    if (newCategory !== '') {
-        const categoryExists = Array.from(document.getElementById('categoryFilter').options).some(option => option.value === newCategory)
-
-        if (!categoryExists) {
-            const categorySelect = document.getElementById('categoryFilter')
-            const option = document.createElement('option')
-            option.value = newCategory
-            option.textContent = newCategory
-            categorySelect.appendChild(option)
-
-            newCategoryInput.value = '';
-        } else {
-            alert("Category Already Exists")
-        }
-    }
-}*/
-
-//New function that will allow user to create a new task and give it a category
-function addNewTodo() {
-    const todoName = prompt('Enter Todo Name:');
-    if (todoName !== null && todoName.trim() !== '') {
-        const todoCategory = prompt('Enter Todo Category');
-        if (todoCategory !== null) {
-            const newTodo = {
-                title: todoName,
-                completedStatus: false,
-                category: todoCategory
-            }
-            todos.push(newTodo)
-            myTodoList();
-        }
-    }
-}
 
 const newTodoButton = document.getElementById('addNewTodo')
 newTodoButton.addEventListener('click', addNewTodo)
 
-//Users need to be able to delete categories
-
-
+//TODO: when edit categories is clicked,
+// display categories in list like todolist
+// with edit and delete buttons
 
 function editCategory(oldCategory, newCategory) {
     todos.forEach(todo => {
