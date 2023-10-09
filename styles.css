@@ -39,14 +39,6 @@ li {
     font-size: 1.5rem;
 }
 
-ul li button {
-    margin-left: 5px;
-    background-color: #03dac6;
-    border: none;
-    border-radius: 25px;
-    padding: 10px 15px;
-}
-
 #addNewTodo, #categoryFilter {
     border-radius: 25px;
     border: none;
@@ -69,11 +61,14 @@ ul li button {
 }
 
 #categoryEditingContainer {
-    background-color: #424242;
+    background-color: #212121;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 25px;
 }
 
 .footer {
-    background-color: #424242;
+    background-color: #212121;
     padding: 10px;
     margin-top: 20px;
     border-radius: 25px;

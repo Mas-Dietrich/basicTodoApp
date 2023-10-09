@@ -32,12 +32,12 @@ function myTodoList(categoryFilter) {
                 li.classList.add('completed');
                 li.style.textDecoration = 'line-through';
             }
-            // Edit button for each task
-            const editButton = document.createElement('button');
-            editButton.textContent = 'Edit Task';
-            editButton.addEventListener('click', () => editTodo(index));
+            // Edit icon for each task
+            const editIcon = document.createElement('i');
+            editIcon.classList.add('fa', 'fa-pencil', 'edit-icon')
+            editIcon.addEventListener('click', () => editTodo(index));
 
-            li.appendChild(editButton);
+            li.appendChild(editIcon);
 
             li.addEventListener('click', () => toggleComplete(index));
             todoList.appendChild(li);
