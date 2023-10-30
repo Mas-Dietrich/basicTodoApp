@@ -60,7 +60,40 @@ function toggleComplete(index) {
 }
 
 //New function that will allow user to create a new task and give it a category
-function addNewTodo() {
+const todoForm = document.getElementById('todoForm')
+const newTaskNameInput = document.getElementById('newTaskName')
+const newTaskCategoryInput = document.getElementById('newTaskCategory')
+
+todoForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const taskName = newTaskNameInput.value;
+    const taskCategory = newTaskCategoryInput.value;
+
+    if (taskName.trim() !== '') {
+    
+        // Create a new todo object
+        const newTodo = {
+            title: taskName,
+            completedStatus: false,
+            category: taskCategory
+        };
+
+        // Add the new todo to the todos array
+        todos.push(newTodo);
+
+        // Clear input fields
+        newTaskNameInput.value = '';
+        newTaskCategoryInput.value = '';
+
+        // Update the todos and categories
+        myTodoList();
+        displayCategoryList()
+        categoryOptions()
+    }
+});
+
+/*function addNewTodo() {
     const todoName = prompt('Enter Todo Name:');
     if (todoName !== null && todoName.trim() !== '') {
         const todoCategory = prompt('Enter Todo Category');
@@ -76,20 +109,26 @@ function addNewTodo() {
             myTodoList();
         }
     }
-}
+} */
 
 function editTodo(index) {
     const newTitle = prompt('Edit task:', todos[index].title);
     if (newTitle !== null) {
+        const updateCategory = confirm('Do you want to update the category for this task?');
+        if (updateCategory) {
+            const newCategory = prompt('Enter the new category:', todos[index].category);
+            todos[index].category = newCategory;
+        }
         todos[index].title = newTitle;
         myTodoList();
+        displayCategoryList();
+        categoryOptions();
     }
 }
 
 //Clear out completed todos
 function clearCompletedTodos() {
     todos = todos.filter(todo => !todo.completedStatus);
-    displayCategoryList();
     categoryOptions();
     myTodoList();
 }
@@ -193,42 +232,63 @@ function displayCategoryList() {
 
 // Function to edit a category
 function editCategory(oldCategory, newCategory) {
-    todos.forEach(todo => {
-        if (Array.isArray(todo.category)) {
-            const index = todo.category.indexOf(oldCategory);
-            if (index !== -1) {
-                todo.category[index] = newCategory;
+    // Check if the new category name already exists
+    if (newCategory === oldCategory || !categoryExists(newCategory)) {
+        todos.forEach(todo => {
+            if (Array.isArray(todo.category)) {
+                const index = todo.category.indexOf(oldCategory);
+                if (index !== -1) {
+                    todo.category[index] = newCategory;
+                }
+            } else {
+                if (todo.category === oldCategory) {
+                    todo.category = newCategory;
+                }
             }
-        } else {
-            if (todo.category === oldCategory) {
-                todo.category = newCategory;
-            }
-        }
-    });
-    displayCategoryList(); // Update the category list after editing
-    myTodoList(); // Refresh the todo list
-    categoryOptions();
+        });
+        displayCategoryList(); // Update the category list after editing
+        myTodoList(); // Refresh the todo list
+        categoryOptions();
+    } else {
+        alert(`Category "${newCategory}" already exists. Please choose a different name.`);
+    }
+}
 
+// Function to check if a category name already exists
+function categoryExists(categoryName) {
+    return todos.some(todo => {
+        return Array.isArray(todo.category) ? todo.category.includes(categoryName) : todo.category === categoryName;
+    });
 }
 
 // Function to delete a category
 function deleteCategory(categoryToDelete) {
-    todos.forEach(todo => {
-        if (Array.isArray(todo.category)) {
-            const index = todo.category.indexOf(categoryToDelete);
-            if (index !== -1) {
-                todo.category.splice(index, 1);
+    if (hasAssociatedTasks(categoryToDelete)) {
+        alert(`Category "${categoryToDelete}" cannot be deleted until you complete its tasks.`);
+    } else {
+        todos = todos.map(todo => {
+            if (Array.isArray(todo.category)) {
+                const index = todo.category.indexOf(categoryToDelete);
+                if (index !== -1) {
+                    todo.category.splice(index, 1);
+                }
+            } else {
+                if (todo.category === categoryToDelete) {
+                    todo.category = "No Category";
+                }
             }
-        } else {
-            if (todo.category === categoryToDelete) {
-                todo.category = "No Category";
-            }
-        }
-    });
-    displayCategoryList(); // Update the category list after deleting
-    myTodoList(); // Refresh the todo list
-    categoryOptions();
+            return todo;
+        });
+        displayCategoryList();
+        myTodoList();
+        categoryOptions();
+    }
+}
 
+function hasAssociatedTasks(categoryName) {
+    return todos.some(todo => {
+        return Array.isArray(todo.category) ? todo.category.includes(categoryName) : todo.category === categoryName;
+    });
 }
 
 
@@ -238,8 +298,9 @@ displayCategoryList();
 //Display, Edit and Delete All Categories End
 
 
-const newTodoButton = document.getElementById('addNewTodo')
-newTodoButton.addEventListener('click', addNewTodo)
+
 document.getElementById('clearDoneTodo').addEventListener('click', clearCompletedTodos)
 
 myTodoList()
+
+//Potential Update: Instead of having string categories, categorize todos by numbers that are connected to an array of objects with id's and category names

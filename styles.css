@@ -28,18 +28,49 @@ header {
     text-decoration: underline;
 }
 
-#categoryFilter {
+#todoForm {
+    background-color: #121212; /* Dark background color */
+    color: #fff; /* White text color */
+    padding: 10px;
+    border-radius: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #newTaskName, #newTaskCategory {
+    background-color: #303030; /* Darker input background color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 25px;
+    padding: 8px;
+    margin: 5px;
+    width: 40%;
+  }
+  
+  #addTodoButton {
+    background-color: #1976D2; /* Accent color for the button */
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #addTodoButton:hover {
+    background-color: #1565C0; /* Slightly darker on hover */
+  }
 
-    margin-top: 15px;
 
-}
 
 li {
     list-style-type: none;
     font-size: 1.5rem;
 }
 
-#addNewTodo, #categoryFilter {
+#categoryFilter {
     border-radius: 25px;
     border: none;
     padding: 10px;
@@ -61,14 +92,14 @@ li {
 }
 
 #categoryEditingContainer {
-    background-color: #212121;
+    background-color: #121212;
     padding: 10px;
     margin-top: 10px;
     border-radius: 25px;
 }
 
 .footer {
-    background-color: #212121;
+    background-color: #121212;
     padding: 10px;
     margin-top: 20px;
     border-radius: 25px;
@@ -81,3 +112,4 @@ li {
     border-radius: 25px;
     color: white;
 }
+
